@@ -27,7 +27,6 @@ class Resource(BaseResource):
         client = self.gke
         parent = "projects/{p}/locations/-".format(p=self.project)
         request = client.list_clusters(parent=parent)
-        #request = client.list_clusters(self.project, parent=parent)
         if request and request.clusters:
             for cluster in request.clusters:
                 found_name = False
