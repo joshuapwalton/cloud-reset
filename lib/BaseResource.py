@@ -23,6 +23,10 @@ class BaseResource(abc.ABC):
         raise NotImplementedError
 
     @property
+    def project(self):
+        raise NotImplementedError
+
+    @property
     def configuration(self):
         raise NotImplementedError
 

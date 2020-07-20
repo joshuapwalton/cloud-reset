@@ -42,6 +42,28 @@ No tests yet.
 
 * Boto3
 
+### GCP
+
+  1. Create a service account dedicated to this process which only has access to projects you want to "reset"
+  2. Export path to Service Account credentials: export GOOGLE_APPLICATION_CREDENTIALS=myserviceaccountcredentals.json
+  3. Install gcloud CLI if needed for your desired services. Currently, this is needed for GCP SQL Instances, GCP FileStore, and GCP Compute TPU Nodes
+  4. Specify Project ID when running instead of boto3 profile: python3 delete_resources.py -f gcp_resources.yml --gcp_project ${ProjectId} 
+
+#### GCP Supported Resources
+
+ - gcp_compute_disks
+ - gcp_compute_images
+ - gcp_compute_instancegroups
+ - gcp_compute_instances
+ - gcp_compute_instancetemplates
+ - gcp_compute_nodegroups
+ - gcp_compute_nodetemplates
+ - gcp_compute_snapshots
+ - gcp_compute_tpunodes
+ - gcp_filestore
+ - gcp_gke_clusters
+ - gcp_sql_instances
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.

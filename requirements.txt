@@ -1,3 +1,6 @@
 boto3
 pyyaml
 tqdm
+google-api-python-client
+google-auth
+google-cloud-container

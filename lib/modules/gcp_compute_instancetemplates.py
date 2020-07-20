@@ -1,0 +1,84 @@
+"""Delete GCP Compute Instance Templates."""
+import googleapiclient.discovery
+import google.auth
+from ..BaseResource import BaseResource
+
+
+class Resource(BaseResource):
+    """Base Resource Class."""
+    name = 'gcp_compute_instancetemplates'
+    type = 'gcp'
+    client = None
+    credentials = None
+    project = None
+    dry_run = True
+    ids = []
+    resources = []
+
+    def __init__(self, project=None):
+        print('Try to process {p}'.format(
+            p=self.name))
+        self.project = project
+        scopes = ['https://www.googleapis.com/auth/compute']
+        credentials, _ = google.auth.default(scopes=scopes)
+        self.client = googleapiclient.discovery.build('compute', 'v1', credentials=credentials)
+
+
+    def get_resources(self):
+        """Get resources for gcp_compute."""
+        client = self.client
+        request = client.instanceTemplates().list(project=self.project)# pylint: disable=maybe-no-member
+        while request is not None:
+            response = request.execute()
+            if 'items' in response and response['items']:
+                for instance in response['items']:
+                    tags = []
+                    found_name = False
+                    self.ids.append(instance['id'])
+                    if 'labels' in instance['properties'] and instance['properties']['labels']:
+                        for label in instance['properties']['labels']:
+                            tags.append({
+                                "Key": label,
+                                "Value": instance['properties']['labels'][label]
+                            })
+                            if label == 'name':
+                                found_name = True
+                    if not found_name:
+                        tags.append({
+                            "Key": "name",
+                            "Value": instance['name']
+                        })
+
+
+                    self.resources.append({
+                        "Id": instance['id'],
+                        "Tags": tags
+                    })
+
+            request = client.instances().list_next(# pylint: disable=maybe-no-member
+                previous_request=request, previous_response=response)
+        return self.ids
+
+
+    def list_resources(self):
+        """List Resources."""
+        self.get_resources()
+
+
+    def delete_resources(self, resources, options=None):
+        """ delete resources specified by ids list"""
+        print(options)
+        client = self.client
+        if self.dry_run:
+            print('dry_run flag set, Skip deleting')
+            return True
+        for resource in resources:
+            try:
+                response = client.instanceTemplates().delete(# pylint: disable=maybe-no-member
+                    project=self.project,
+                    instanceTemplate=resource['Id']
+                ).execute()
+                print(response)
+            except Exception as error:# pylint: disable=broad-except
+                print(error)
+        return True

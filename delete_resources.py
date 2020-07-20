@@ -27,6 +27,9 @@ from lib.CloudReset import CloudReset
 def get_args():
     parser = argparse.ArgumentParser(description='Description')
 
+    parser.add_argument("--gcp_project", default=None,
+                    help="GCP Project")
+
     parser.add_argument("-p", "--profile", default=None,
                     help="AWS Profile to assume. Must be typically defined in your ~/.aws/credentials")
 

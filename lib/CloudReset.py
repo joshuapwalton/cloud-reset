@@ -19,7 +19,7 @@ class CloudReset:
     """
     config_file = None
     configuration = None
-
+    project = None
     resource_instances = {}
     resources = {}
 
@@ -27,7 +27,7 @@ class CloudReset:
     dry_run = True
 
     def __init__(self, config_file, args=None):
-        if not args.profile:
+        if not args.profile and not args.gcp_project:
             if (   not os.environ.get("AWS_PROFILE")
                 or os.environ["AWS_PROFILE"] == 'default'
                 or not re.search('^sandbox', os.environ["AWS_PROFILE"])
@@ -36,6 +36,10 @@ class CloudReset:
                 print("Please specify a value fot the AWS_PROFILE that will be used to delete resources.")
                 print("The profile name must start with the string 'sandbox'.")
                 sys.exit(1)
+        if args.gcp_project:
+            print('Setting project: {p}'.format(
+                p=args.gcp_project))
+            self.project = args.gcp_project
 
         self.config_file = config_file
         self.load_configuration()
@@ -71,7 +75,10 @@ class CloudReset:
 
         resource_class = getattr(module, 'Resource')
         try:
-            resource_instance = resource_class()
+            if self.project:
+                resource_instance = resource_class(self.project)
+            else:
+                resource_instance = resource_class()
             resource_instance.dry_run = self.dry_run
         except TypeError as error:
             print(f'Error instantiating class {module_name}: {error.args[0]}')

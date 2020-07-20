@@ -1,0 +1,61 @@
+- gcp_compute_tpunodes:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_sql_instances:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_filestore:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_gke_clusters:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_compute_images:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_compute_snapshots:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_compute_disks:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_compute_instancegroups:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_compute_instancetemplates:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_compute_nodegroups:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_compute_nodetemplates:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+- gcp_compute_instances:
+    exclude:
+        - Tag:
+            Value: /testexception/
+            Key: name 
+
